@@ -13,39 +13,6 @@ export const useAuthStore = create(
 
       setSession: (session) => set({ session, user: session?.user ?? null }),
 
-      loginWithCode: async (code) => {
-        set({ isLoading: true });
-        try {
-          // Sign in via Supabase Auth
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email: `${code}@t-store.local`,
-            password: code,
-          });
-          if (error) throw error;
-          get().setSession(data.session);
-          await get().loadProfile();
-        } catch (err) {
-          throw err;
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
-      register: async ({ email, password, profile }) => {
-        set({ isLoading: true });
-        try {
-          const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: { data: profile },
-          });
-          if (error) throw error;
-          return data;
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
       loadProfile: async () => {
         const user = get().user;
         if (!user) return;

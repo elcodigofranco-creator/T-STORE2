@@ -1,9 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { ProtectedRoute, AdminRoute, PublicRoute } from './ProtectedRoute';
+import { ProtectedRoute, AdminRoute } from './ProtectedRoute';
 
 // Auth
 import LoginPage from '../features/auth/LoginPage';
-import RegisterPage from '../features/auth/RegisterPage';
 
 // Main App Layout
 import AppLayout from '../components/layout/AppLayout';
@@ -24,13 +23,10 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
-        <Route element={<PublicRoute />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Route>
+        {/* Login is public, no registration */}
+        <Route path="/login" element={<LoginPage />} />
 
-        {/* Redirect root to hub */}
+        {/* Redirect root to login if not auth, hub if auth */}
         <Route
           path="/"
           element={
@@ -59,8 +55,8 @@ export default function AppRouter() {
           </Route>
         </Route>
 
-        {/* Catch all */}
-        <Route path="*" element={<Navigate to="/hub" replace />} />
+        {/* Catch all — redirect to login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

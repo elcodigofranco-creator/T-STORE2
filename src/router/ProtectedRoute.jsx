@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/useAuthStore';
 
 export function ProtectedRoute() {
@@ -10,11 +10,5 @@ export function ProtectedRoute() {
 export function AdminRoute() {
   const { isAdmin } = useAuthStore();
   if (!isAdmin) return <Navigate to="/hub" replace />;
-  return <Outlet />;
-}
-
-export function PublicRoute() {
-  const { user } = useAuthStore();
-  if (user) return <Navigate to="/hub" replace />;
   return <Outlet />;
 }
